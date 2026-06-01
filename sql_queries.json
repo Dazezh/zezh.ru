@@ -10,6 +10,7 @@
         "insert_simple_link": "INSERT INTO `short_links` (`short_code`, `original_url`, `is_multi`) VALUES (%s, %s, 0)",
         "insert_multi_link": "INSERT INTO `short_links` (`short_code`, `is_multi`) VALUES (%s, 1)",
         "insert_link_item": "INSERT INTO `link_items` (`link_id`, `url`, `description`, `position`) VALUES (%s, %s, %s, %s)",
+        "delete_link_by_id": "DELETE FROM `short_links` WHERE `id` = %s",
         
         "update_click_count": "UPDATE `short_links` SET `click_count` = `click_count` + 1 WHERE `id` = %s",
         

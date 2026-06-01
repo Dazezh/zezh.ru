@@ -2,61 +2,20 @@ import qrcode
 import random
 import json
 import re
+import logging
 
 from io import BytesIO
 from urllib.parse import urlparse
 from flask import Flask, request, redirect, render_template, send_file
+from db import DBError, mysql_db
 
-class db():
+class tools():
     characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
-    def __init__(self, config: dict) -> None:
-        global pymysql
-        import pymysql
-
-        # Из файла с SQL запросами получаем их (для mysql)
-        with open("sql_queries.json", encoding="utf8") as file:
-            self.sql_queries = json.load(file)["mysql"]
-        
-        # Подключаемся к БД
-        self.db = pymysql.connect(
-            host = config.get("MYSQL_HOST"),
-            user = config.get("MYSQL_USER"),
-            password = config.get("MYSQL_PASSWORD"),
-            db = config.get("MYSQL_DB"),
-            charset='utf8mb4',
-            cursorclass=pymysql.cursors.DictCursor
-        )
-        
+    def __init__(self, config: dict, logger=None) -> None:
         self.config = config
-        
-        # Создаем таблицы если их нет
-        self._init_tables()
-    
-    def _init_tables(self):
-        """Инициализация таблиц базы данных"""
-        try:
-            with self.db.cursor() as cursor:
-                cursor.execute(self.sql_queries["create_short_links_table"])
-                cursor.execute(self.sql_queries["create_link_items_table"])
-                self.db.commit()
-        except Exception as e:
-            print(f"Ошибка при инициализации таблиц: {e}")
-    
-    def __reconnect(self):
-        try:
-            self.db.close()
-        except:
-            pass
-        finally:
-            self.db = pymysql.connect(
-                host = self.config['MYSQL_HOST'],
-                user = self.config['MYSQL_USER'],
-                password = self.config['MYSQL_PASSWORD'],
-                db = self.config['MYSQL_DB'],
-                charset='utf8mb4',
-                cursorclass=pymysql.cursors.DictCursor
-            )
+        self.logger = logger or logging.getLogger(__name__)
+        self.db = mysql_db(config, self.logger)
     
     def _generate_short_code(self, length):
         """Генерация случайного короткого кода"""
@@ -77,164 +36,131 @@ class db():
     
     def _code_exists(self, code):
         """Проверка существования кода в базе"""
-        for _ in range(4):
-            try:
-                with self.db.cursor() as cursor:
-                    cursor.execute(self.sql_queries["check_code_exists"], (code,))
-                    result = cursor.fetchone()
-                    return result['count'] > 0
-            except:
-                self.__reconnect()
-        return True  # В случае ошибки считаем что код существует
+        rows = self.db.fetch_all("check_code_exists", code)
+        return bool(rows and rows[0]["count"] > 0)
+
+    def _get_first(self, query_name, *args):
+        rows = self.db.fetch_all(query_name, *args)
+        return rows[0] if rows else None
 
     def get_link(self, short_code):
         """Получение информации о ссылке по коду"""
-        for _ in range(4):
-            try:
-                with self.db.cursor() as cursor:
-                    cursor.execute(self.sql_queries["select_link_by_code"], (short_code,))
-                    link = cursor.fetchone()
-                
-                if not link:
-                    return None
-                
-                # Если это мульти-ссылка, получаем все элементы
-                if link['is_multi']:
-                    with self.db.cursor() as cursor:
-                        cursor.execute(self.sql_queries["select_link_items"], (link['id'],))
-                        items = cursor.fetchall()
-                    
-                    return {
-                        "id": link['id'],
-                        "short_code": link['short_code'],
-                        "multi": True,
-                        "items": items,
-                        "click_count": link['click_count']
-                    }
-                else:
-                    return {
-                        "id": link['id'],
-                        "short_code": link['short_code'],
-                        "multi": False,
-                        "original_url": link['original_url'],
-                        "click_count": link['click_count']
-                    }
-            except:
-                self.__reconnect()
+        link = self._get_first("select_link_by_code", short_code)
         
-        return None
+        if not link:
+            return None
+        
+        if link['is_multi']:
+            items = self.db.fetch_all("select_link_items", link['id'])
+            
+            return {
+                "id": link['id'],
+                "short_code": link['short_code'],
+                "multi": True,
+                "items": items,
+                "click_count": link['click_count']
+            }
+        
+        return {
+            "id": link['id'],
+            "short_code": link['short_code'],
+            "multi": False,
+            "original_url": link['original_url'],
+            "click_count": link['click_count']
+        }
 
     def add_click(self, link_id):
         """Увеличение счетчика переходов"""
-        for _ in range(4):
-            try:
-                with self.db.cursor() as cursor:
-                    cursor.execute(self.sql_queries["update_click_count"], (link_id,))
-                    self.db.commit()
-                return True
-            except:
-                self.__reconnect()
-        return False
+        try:
+            return bool(self.db.execute_write("update_click_count", link_id, return_id=False))
+        except DBError:
+            return False
     
     def create_short_link(self, url, custom_code=None, length=5):
         """Создание обычной короткой ссылки"""
-        for _ in range(4):
+        try:
+            # Проверка на ссылку на собственный домен
             try:
-                # Проверка на ссылку на собственный домен
-                try:
-                    if url.rsplit("/")[2] == request.host:
-                        return f'Сокращение ссылок ведущих на "{request.host}" запрещено.', 400
-                except:
-                    return "Некорректный URL", 400
-                
-                # Проверяем существование ссылки
-                with self.db.cursor() as cursor:
-                    cursor.execute(self.sql_queries["select_link_by_url"], (url,))
-                    existing_link = cursor.fetchone()
-                
-                if existing_link:
-                    short_url = ''.join((request.url_root, existing_link['short_code']))
-                    return short_url, 200
-                
-                # Генерируем или проверяем пользовательский код
-                if custom_code:
-                    valid, error = self._validate_custom_code(custom_code)
-                    if not valid:
-                        return error, 400
-                    
-                    if self._code_exists(custom_code):
-                        return f'Код "{custom_code}" уже используется. Выберите другой.', 400
-                    
-                    short_code = custom_code
-                else:
-                    # Генерируем случайный код
-                    for _ in range(10):
-                        short_code = self._generate_short_code(length)
-                        if not self._code_exists(short_code):
-                            break
-                    else:
-                        return f'После 10 попыток генерации уникального кода не удалось. Попробуйте другую длину.', 500
-                
-                # Создаем запись
-                with self.db.cursor() as cursor:
-                    cursor.execute(self.sql_queries["insert_simple_link"], (short_code, url))
-                    self.db.commit()
-                
-                short_url = ''.join((request.url_root, short_code))
-                return short_url, 200
+                if url.rsplit("/")[2] == request.host:
+                    return f'Сокращение ссылок ведущих на "{request.host}" запрещено.', 400
             except:
-                self.__reconnect()
-        
-        return "Ошибка обращения к базе данных", 500
+                return "Некорректный URL", 400
+            
+            existing_link = self._get_first("select_link_by_url", url)
+            
+            if existing_link:
+                short_url = ''.join((request.url_root, existing_link['short_code']))
+                return short_url, 200
+            
+            # Генерируем или проверяем пользовательский код
+            if custom_code:
+                valid, error = self._validate_custom_code(custom_code)
+                if not valid:
+                    return error, 400
+                
+                if self._code_exists(custom_code):
+                    return f'Код "{custom_code}" уже используется. Выберите другой.', 400
+                
+                short_code = custom_code
+            else:
+                # Генерируем случайный код
+                for _ in range(10):
+                    short_code = self._generate_short_code(length)
+                    if not self._code_exists(short_code):
+                        break
+                else:
+                    return f'После 10 попыток генерации уникального кода не удалось. Попробуйте другую длину.', 500
+            
+            self.db.execute_write("insert_simple_link", short_code, url, return_id=False)
+            
+            short_url = ''.join((request.url_root, short_code))
+            return short_url, 200
+        except DBError:
+            return "Ошибка обращения к базе данных", 500
 
     def create_multi_link(self, urls, descriptions, custom_code=None, length=5):
         """Создание мульти-ссылки"""
-        for _ in range(4):
-            try:
-                if len(urls) > 40:
-                    return f'Максимальное количество ссылок в одной мульти ссылке 40, а вы попытались создать {len(urls)}.', 400
+        link_id = None
+        try:
+            if len(urls) > 40:
+                return f'Максимальное количество ссылок в одной мульти ссылке 40, а вы попытались создать {len(urls)}.', 400
+            
+            if len(urls) < 2:
+                return 'Для мульти-ссылки нужно минимум 2 URL', 400
+            
+            # Генерируем или проверяем пользовательский код
+            if custom_code:
+                valid, error = self._validate_custom_code(custom_code)
+                if not valid:
+                    return error, 400
                 
-                if len(urls) < 2:
-                    return 'Для мульти-ссылки нужно минимум 2 URL', 400
+                if self._code_exists(custom_code):
+                    return f'Код "{custom_code}" уже используется. Выберите другой.', 400
                 
-                # Генерируем или проверяем пользовательский код
-                if custom_code:
-                    valid, error = self._validate_custom_code(custom_code)
-                    if not valid:
-                        return error, 400
-                    
-                    if self._code_exists(custom_code):
-                        return f'Код "{custom_code}" уже используется. Выберите другой.', 400
-                    
-                    short_code = custom_code
+                short_code = custom_code
+            else:
+                # Генерируем случайный код
+                for _ in range(10):
+                    short_code = self._generate_short_code(length)
+                    if not self._code_exists(short_code):
+                        break
                 else:
-                    # Генерируем случайный код
-                    for _ in range(10):
-                        short_code = self._generate_short_code(length)
-                        if not self._code_exists(short_code):
-                            break
-                    else:
-                        return f'После 10 попыток генерации уникального кода не удалось. Попробуйте другую длину.', 500
-                
-                # Создаем мульти-ссылку
-                with self.db.cursor() as cursor:
-                    cursor.execute(self.sql_queries["insert_multi_link"], (short_code,))
-                    cursor.execute(self.sql_queries["get_last_insert_id"])
-                    link_id = cursor.fetchone()['id']
-                    
-                    # Добавляем все элементы
-                    for position, (url, description) in enumerate(zip(urls, descriptions)):
-                        cursor.execute(self.sql_queries["insert_link_item"], 
-                                     (link_id, url, description, position))
-                    
-                    self.db.commit()
-                
-                short_url = ''.join((request.url_root, short_code))
-                return short_url, 200
-            except:
-                self.__reconnect()
-        
-        return "Ошибка обращения к базе данных", 500
+                    return f'После 10 попыток генерации уникального кода не удалось. Попробуйте другую длину.', 500
+            
+            link_id = self.db.execute_write("insert_multi_link", short_code)
+            
+            for position, (url, description) in enumerate(zip(urls, descriptions)):
+                self.db.execute_write("insert_link_item", link_id, url, description, position, return_id=False)
+            
+            short_url = ''.join((request.url_root, short_code))
+            return short_url, 200
+        except DBError:
+            if link_id:
+                try:
+                    self.db.execute_write("delete_link_by_id", link_id, return_id=False)
+                except DBError:
+                    pass
+            return "Ошибка обращения к базе данных", 500
 
 
 class shoter:
@@ -245,15 +171,23 @@ class shoter:
             with open("config.json") as file:
                 config = json.load(file)
             
-            self.db = db(config)
+            self.tools = tools(config, self.app.logger)
         except Exception as e:
             print(f"Ошибка загрузки конфигурации: {e}")
             print("Создайте файл config.json со следующей структурой:")
             print(json.dumps({
-                "MYSQL_HOST": "localhost",
-                "MYSQL_USER": "user",
-                "MYSQL_PASSWORD": "password",
-                "MYSQL_DB": "database"
+                "db_config": {
+                    "MYSQL_HOST": "localhost",
+                    "MYSQL_USER": "user",
+                    "MYSQL_PASSWORD": "password",
+                    "MYSQL_DB": "database"
+                },
+                "SQL_QUERIES_FILE": "sql_queries.json",
+                "SQL_CREATE_FILE": "db_init.sql",
+                "CONFIG_FILE": "config.json",
+                "MYSQL_RETRY_COUNT": 4,
+                "MYSQL_RETRY_DELAY": 0.5,
+                "sql_install": False
             }, indent=2))
             raise
 
@@ -273,7 +207,7 @@ class shoter:
         # Оповещение о прочих ошибках сервера
         @self.app.errorhandler(Exception)
         def handle_exception(ex):    
-            return render_template('error.html', message=ex, home_url=request.host_url)
+            return render_template('error.html', message=ex, home_url=request.host_url), 500
 
         # Функция для генерации QR-кода
         @self.app.route('/make_qr')
@@ -328,7 +262,7 @@ class shoter:
             
             # Если указан пользовательский код, используем его
             if custom_code:
-                new_url = self.db.create_short_link(original_url, custom_code=custom_code)
+                new_url = self.tools.create_short_link(original_url, custom_code=custom_code)
             else:
                 try:
                     size = int(size)
@@ -337,7 +271,7 @@ class shoter:
                 except Exception as ex:
                     return render_template('error.html', message=ex, home_url=request.host_url), 400
                 
-                new_url = self.db.create_short_link(original_url, length=size)
+                new_url = self.tools.create_short_link(original_url, length=size)
             
             if not new_url[1] == 200:
                 return render_template('error.html', message=new_url[0], home_url=request.host_url), new_url[1]
@@ -366,7 +300,7 @@ class shoter:
             
             # Если указан пользовательский код, используем его
             if custom_code:
-                new_url = self.db.create_multi_link(urls, descriptions, custom_code=custom_code)
+                new_url = self.tools.create_multi_link(urls, descriptions, custom_code=custom_code)
             else:
                 try:
                     size = int(size)
@@ -375,7 +309,7 @@ class shoter:
                 except Exception as ex:
                     return render_template('error.html', message=ex, home_url=request.host_url), 400
                 
-                new_url = self.db.create_multi_link(urls, descriptions, length=size)
+                new_url = self.tools.create_multi_link(urls, descriptions, length=size)
             
             if not new_url[1] == 200:
                 return render_template('error.html', message=new_url[0], home_url=request.host_url), new_url[1]
@@ -404,7 +338,7 @@ class shoter:
                 if len(short_code) > 20:
                     return render_template('error.html', message="Длина кода сокращённой ссылки не может превышать 20 символов.", home_url=request.url_root), 400
             
-                link = self.db.get_link(short_code)
+                link = self.tools.get_link(short_code)
                 
                 if not link:
                     return render_template('error.html', message="Ссылка не найдена", home_url=request.url_root), 404
@@ -422,7 +356,7 @@ class shoter:
             if len(short_code) > 20:
                 return render_template('error.html', message="Длина кода сокращённой ссылки не может превышать 20 символов.", home_url=request.url_root), 400
             
-            link = self.db.get_link(short_code)
+            link = self.tools.get_link(short_code)
 
             if not link:
                 return render_template('no.html', short_code=short_code, home_url=request.host_url), 404
@@ -438,7 +372,7 @@ class shoter:
                     crop = self.crop_url
                 )
 
-            self.db.add_click(link["id"])
+            self.tools.add_click(link["id"])
             return redirect(link["original_url"])
 
 shoter_app = shoter(__name__)

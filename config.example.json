@@ -1,0 +1,18 @@
+{
+  "db_config": {
+    "MYSQL_HOST": "127.0.0.1",
+    "MYSQL_USER": "shortener_user",
+    "MYSQL_PASSWORD": "change-me",
+    "MYSQL_DB": "shortener",
+    "MYSQL_CHARSET": "utf8mb4",
+    "MYSQL_CONNECT_TIMEOUT": 5,
+    "MYSQL_READ_TIMEOUT": 30,
+    "MYSQL_WRITE_TIMEOUT": 30
+  },
+  "SQL_QUERIES_FILE": "sql_queries.json",
+  "SQL_CREATE_FILE": "db_init.sql",
+  "CONFIG_FILE": "config.json",
+  "MYSQL_RETRY_COUNT": 4,
+  "MYSQL_RETRY_DELAY": 0.5,
+  "sql_install": false
+}
