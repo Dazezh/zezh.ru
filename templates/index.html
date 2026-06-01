@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Сократи URL | ZEZH.RU</title>
+  <meta property="og:title" content="Сократи URL">
+  <meta property="og:description" content="Сервис коротких ссылок ZEZH.RU">
+{% endblock %}
+
+{% block content %}
+  <section class="workspace workspace--home">
+    <section class="tool-panel" aria-labelledby="single-title">
+      <div class="section-label">Одна ссылка</div>
+      <h1 id="single-title">Сокращение ссылок</h1>
+
+      <form class="form-stack" action="/" method="POST">
+        <div class="field">
+          <label for="url">URL</label>
+          <input type="url" class="form-control" id="url" name="url" placeholder="https://example.com" required>
+        </div>
+
+        <div class="field">
+          <label for="custom_code">Свой код</label>
+          <input type="text" class="form-control" id="custom_code" name="custom_code" placeholder="my-link"
+                 pattern="[a-zA-Z0-9_-]{3,20}" maxlength="20">
+          <small class="hint">3-20 символов: буквы, цифры, дефис, подчеркивание.</small>
+        </div>
+
+        <div class="field" id="sizeBlock">
+          <label for="size">Длина кода</label>
+          <div class="range-row">
+            <input type="range" class="form-range" id="size" name="size" min="3" max="5" value="4">
+            <span class="value-pill" id="sizeValue">4 символа</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large">Сократить</button>
+      </form>
+    </section>
+
+    <aside class="side-panel" aria-labelledby="inspect-title">
+      <div class="section-label">Проверка</div>
+      <h2 id="inspect-title">Куда ведёт ссылка</h2>
+
+      <form id="urlCheckForm" class="form-stack" novalidate>
+        <div class="field">
+          <label for="urlInput">Короткая ссылка</label>
+          <input
+            type="url"
+            class="form-control"
+            id="urlInput"
+            placeholder="https://zezh.ru/abcde"
+            pattern="^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-]+)*(\/)?$"
+            required
+          >
+          <div class="invalid-feedback">Введите корректный URL</div>
+        </div>
+        <button type="submit" class="btn btn-secondary">Показать информацию</button>
+      </form>
+
+      <div class="divider"></div>
+
+      <div class="disclosure-list">
+        <details class="disclosure" open>
+          <summary>Быстрый способ</summary>
+          <p>Добавьте <code>+info</code> в конец короткой ссылки: <span>{{ home_url }}code+info</span></p>
+        </details>
+        <details class="disclosure">
+          <summary>Повторное сокращение</summary>
+          <p>Если исходный URL уже был добавлен, сервис вернёт ранее созданную короткую ссылку.</p>
+        </details>
+      </div>
+    </aside>
+  </section>
+{% endblock %}

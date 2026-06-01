@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="111.61504mm"
+   height="60.868778mm"
+   viewBox="0 0 111.61505 60.868778"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (f4327f4, 2025-05-13)"
+   sodipodi:docname="full_logo_black.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title19">Логотип ZEZH.RU</title>
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#999999"
+     borderopacity="1"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="261.27595"
+     inkscape:cy="93.691646"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="828"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g19" />
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient2"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#0b7771;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#064f4b;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2"
+       id="linearGradient3"
+       x1="54.096619"
+       y1="53.728867"
+       x2="108.24476"
+       y2="53.728867"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.98185497,0,0,0.98185487,1.1531021,-2.2907613)" />
+    <filter
+       inkscape:label="Evanescent"
+       inkscape:menu="Blurs"
+       inkscape:menu-tooltip="Blur the contents of objects, preserving the outline and adding progressive transparency at edges"
+       style="color-interpolation-filters:sRGB"
+       id="filter29"
+       x="-0.16756545"
+       y="-0.67850614"
+       width="1.3351309"
+       height="2.3570123">
+      <feGaussianBlur
+         result="result6"
+         stdDeviation="3"
+         in="SourceGraphic"
+         id="feGaussianBlur29" />
+      <feColorMatrix
+         values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 "
+         result="result7"
+         in="SourceGraphic"
+         id="feColorMatrix29" />
+      <feComposite
+         operator="in"
+         in="result6"
+         in2="result7"
+         id="feComposite29" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Слой 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-26.086837,-1.8876902)">
+    <g
+       id="g19">
+      <path
+         d="m 65.175777,61.13298 v -4.096715 h -9.599765 v -3.91328 l 8.499155,-13.32961 h 5.50305 v 13.69648 h 2.751525 v 3.54641 h -2.751525 v 4.096715 z m -5.900493,-7.643125 h 5.900493 v -8.957742 h -0.275153 z m 15.445901,7.643125 v -3.699272 h 5.74763 v -14.30793 h -0.275152 l -4.341295,5.686485 -2.93496,-2.292938 5.105607,-6.72595 h 7.031676 v 17.640333 h 4.52473 v 3.699272 z m 23.333607,0.36687 q -1.926068,0 -3.42412,-0.458587 -1.498053,-0.48916 -2.537518,-1.314618 -1.039465,-0.825457 -1.58977,-1.95664 -0.519732,-1.161755 -0.519732,-2.506945 0,-2.07893 1.192327,-3.332402 1.192328,-1.284045 3.05725,-1.803778 V 49.8823 q -1.58977,-0.580877 -2.598662,-1.773205 -1.008893,-1.192327 -1.008893,-3.05725 0,-1.2229 0.48916,-2.262365 0.48916,-1.039465 1.436908,-1.773205 0.947747,-0.764312 2.32351,-1.161755 1.375762,-0.428015 3.17954,-0.428015 1.773205,0 3.148968,0.428015 1.40633,0.397443 2.35408,1.161755 0.94775,0.73374 1.43691,1.773205 0.48916,1.039465 0.48916,2.262365 0,1.864923 -1.00889,3.05725 -1.0089,1.192328 -2.59867,1.773205 v 0.24458 q 1.86493,0.519733 3.05725,1.803778 1.19233,1.253472 1.19233,3.332402 0,1.34519 -0.5503,2.506945 -0.51974,1.131183 -1.5592,1.95664 -1.03947,0.825458 -2.53752,1.314618 -1.498051,0.458587 -3.424118,0.458587 z m 0,-3.515837 q 1.58977,0 2.415228,-0.73374 0.85603,-0.73374 0.85603,-1.987213 v -0.61145 q 0,-1.284045 -0.82546,-1.987212 -0.825456,-0.73374 -2.445798,-0.73374 -1.620343,0 -2.4458,0.73374 -0.825458,0.703167 -0.825458,1.987212 v 0.61145 q 0,1.253473 0.825458,1.987213 0.85603,0.73374 2.4458,0.73374 z m 0,-9.41633 q 1.528625,0 2.323508,-0.703168 0.79489,-0.703167 0.79489,-1.895495 v -0.458587 q 0,-1.192328 -0.82546,-1.864923 -0.794886,-0.703167 -2.292938,-0.703167 -1.498053,0 -2.32351,0.703167 -0.794885,0.672595 -0.794885,1.864923 v 0.458587 q 0,1.192328 0.794885,1.895495 0.794885,0.703168 2.32351,0.703168 z"
+         id="text2"
+         style="font-weight:bold;font-size:30.5725px;line-height:1;font-family:'IBM Plex Mono';-inkscape-font-specification:'IBM Plex Mono Bold';text-align:center;letter-spacing:-1.30784px;text-anchor:middle;fill:url(#linearGradient3);stroke-width:4.58589;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+         transform="scale(0.97997624,1.0204329)"
+         aria-label="418" />
+      <path
+         d="M 41.050925,18.15971 H 25.788923 v 4.106205 h 9.048187 l -9.702273,11.410163 v 4.106206 h 16.243131 v -4.106206 h -9.95664 l 9.629597,-11.410163 z m 19.099083,11.410163 c 0.03634,-0.436057 0.03634,-0.617748 0.03634,-0.872114 0,-1.962258 -0.290705,-3.779163 -0.7631,-5.160011 -1.308172,-3.561133 -4.469587,-5.705081 -8.43044,-5.705081 -5.632405,0 -9.084525,4.069867 -9.084525,10.647063 0,6.286491 3.415782,10.13833 8.975511,10.13833 4.39691,0 7.958044,-2.470991 9.084525,-6.359167 h -5.014658 c -0.617747,1.562538 -2.034933,2.47099 -3.888176,2.47099 -1.453524,0 -2.616344,-0.617747 -3.343106,-1.70789 -0.472395,-0.726762 -0.654085,-1.598877 -0.726762,-3.45212 z M 47.068292,26.19043 c 0.327043,-3.016063 1.598876,-4.469587 3.851838,-4.469587 2.325639,0 3.706486,1.562539 3.960853,4.469587 z M 76.669085,18.15971 H 61.407083 v 4.106205 h 9.048187 l -9.702273,11.410163 v 4.106206 h 16.243131 v -4.106206 h -9.956639 l 9.629596,-11.410163 z m 2.601595,-6.867901 v 26.490475 h 5.087334 V 26.008739 c 0,-2.252962 1.635215,-3.851838 3.924515,-3.851838 1.126481,0 1.962257,0.399719 2.543667,1.199157 0.472395,0.654086 0.58141,1.199157 0.58141,2.434653 V 37.782284 H 96.49494 V 24.627891 c 0,-2.434652 -0.654086,-4.178881 -1.998596,-5.305362 -1.126481,-0.944791 -2.761695,-1.489862 -4.39691,-1.489862 -2.507329,0 -4.324234,0.981128 -5.74142,3.161414 v -9.702272 z"
+         id="text1"
+         style="font-weight:bold;font-size:36.3381px;line-height:0.9;font-family:'Nimbus Sans L';-inkscape-font-specification:'Nimbus Sans L Bold';text-align:center;letter-spacing:-1.32292px;text-anchor:middle;stroke-width:5.45074;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+         transform="scale(1.0378757,0.96350654)"
+         aria-label="zezh" />
+      <path
+         style="display:inline;fill:#000000;stroke-width:0.528308"
+         d="m 107.48593,22.373866 c 0,0 1.52271,0.01265 8.20856,0.0073 7.78463,-0.0065 8.72073,0.08124 9.53648,-0.347747 1.31065,-0.689247 1.0831,-0.763423 1.10893,-4.678776 l -0.0473,-3.331414 c 0.0887,-1.376225 -0.68705,-2.452742 -1.82626,-2.496535 L 113.9778,11.433054 102.02364,11.395824 98.385872,6.620803 94.944178,1.9449258 111.69853,1.9014188 c 13.00276,-0.033766 15.19222,-0.014672 15.85291,0.165306 3.8141,1.0389781 7.49034,4.8822395 8.02889,7.3281428 0.50036,2.2724654 0.37871,4.8945564 0.37871,7.3093804 0,4.744876 0.27392,6.690398 -0.74067,9.136017 -0.71167,1.715409 -3.25931,3.608799 -3.74111,3.911467 -0.29491,0.185268 -2.63874,1.309161 -5.20521,1.863853 l -0.51282,0.110839 0.94084,1.335366 c 3.3257,4.720295 10.83601,15.121821 11.00181,15.368387 0,0 -10.76286,-0.01014 -10.93136,-0.01184 -0.0394,-0.05525 -19.28456,-26.044566 -19.28456,-26.044566 z"
+         id="path19"
+         sodipodi:nodetypes="ssscccccccssssssscssccs" />
+    </g>
+    <path
+       style="display:none;fill:#000000"
+       d="m 106.38133,120.91623 c 0,0 2.89841,0.0238 15.62453,0.0138 14.81761,-0.0122 16.59942,0.15292 18.15215,-0.65456 2.49475,-1.29736 2.06162,-2.5297 2.11079,-9.89951 l -0.0902,-6.27067 c 0.16889,-2.59045 -1.30776,-4.616762 -3.47617,-4.699194 l -19.96426,-0.176278 -28.574885,-0.07009 -6.92431,-8.987955 -6.551069,-8.801334 37.711814,-0.0819 c 24.75004,-0.05375 28.91751,-0.02761 30.1751,0.311154 7.25994,1.955653 13.0223,7.156621 15.28255,13.793657 l 0.72084,2.116666 v 11.641674 c 0,13.25777 0.0253,13.05757 -2.23666,17.72707 -1.52649,3.15127 -3.52547,5.47087 -6.46727,7.50453 -3.22279,2.22791 -4.84956,2.88442 -9.73469,3.92851 l -0.97613,0.20863 1.79083,2.51354 c 6.33028,8.88494 20.62573,28.46358 20.94134,28.92769 0,0 -20.48651,-0.0191 -20.80723,-0.0223 -0.0751,-0.104 -36.70707,-49.0233 -36.70707,-49.0233 z"
+       id="path5"
+       sodipodi:nodetypes="ssscccccccssscsssscssccs" />
+  </g>
+  <metadata
+     id="metadata19">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>Логотип ZEZH.RU</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Роман Бальчонок</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:description>Использовались следующие шрифты: IBM Plex Mono и Nimbus Sans L
+Копирайты:
+Copyright 2017 IBM Corp. All rights reserved.
+Copyright 2014 by (URW)++ Design &amp; Development GmbH</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

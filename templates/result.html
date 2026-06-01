@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Сокращённая ссылка | ZEZH.RU</title>
+  <meta property="og:title" content="Сокращённая ссылка">
+  <meta property="og:description" content="Ваша ссылка успешно сокращена">
+{% endblock %}
+
+{% block content %}
+  <section class="workspace workspace--result">
+    <section class="result-hero" aria-labelledby="result-title">
+      <div class="section-label">Готово</div>
+      <h1 id="result-title">{{ short_code }}</h1>
+      <div class="copy-row">
+        <input type="text" class="form-control" value="{{ short_url }}" id="shortUrl" readonly>
+        <button class="btn btn-primary" type="button" id="copyButton" onclick="copyText('shortUrl')">Копировать</button>
+      </div>
+    </section>
+
+    <section class="result-grid" aria-label="Информация о ссылке">
+      <article class="panel">
+        <div class="section-label">Исходный URL</div>
+        <div class="link-preview">
+          <img src="{{ original_url_favicon }}" class="favicon" width="20" height="20" alt="">
+          <a href="{{ original_url }}">{{ original_url }}</a>
+        </div>
+      </article>
+
+      <article class="panel metric-panel">
+        <div class="section-label">Статистика</div>
+        <strong class="metric">{{ count }}</strong>
+        <span>переходов</span>
+      </article>
+
+      <article class="panel qr-panel">
+        <div class="section-label">QR-код</div>
+        <div id="qrLoader" class="loading-box qr-container">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="visually-hidden">Загрузка...</span>
+        </div>
+        <img id="qrImage" src="{{ home_url }}make_qr?url={{ short_url }}"
+             class="qr-image qr-container d-none" alt="QR-код">
+        <a href="{{ home_url }}make_qr?url={{ short_url }}" download="qr_{{ short_code }}.png"
+           class="btn btn-secondary">Скачать QR</a>
+      </article>
+    </section>
+
+    <div class="action-row">
+      <a href="{{ home_url }}" class="btn btn-outline">Создать ещё</a>
+      <a href="{{ short_url }}" class="btn btn-primary">Перейти</a>
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Ошибка | ZEZH.RU</title>
+  <meta property="og:title" content="Ошибка">
+  <meta property="og:description" content="Произошла ошибка при обработке запроса">
+{% endblock %}
+
+{% block content %}
+  <section class="status-panel status-panel--danger" aria-labelledby="error-title">
+    <div class="status-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="44" height="44" fill="none">
+        <path d="M12 8v5m0 4h.01M10.2 4.9 2.8 18a2 2 0 0 0 1.8 3h14.8a2 2 0 0 0 1.8-3L13.8 4.9a2 2 0 0 0-3.6 0Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="section-label">Ошибка</div>
+    <h1 id="error-title">Запрос не обработан</h1>
+    <p>{{ message }}</p>
+    <a href="{{ home_url }}" class="btn btn-primary">На главную</a>
+  </section>
+{% endblock %}

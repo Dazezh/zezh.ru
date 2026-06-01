@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ home_url }}">
+  <meta property="og:image" content="/static/cr_logo/png/cr_logo_white_100dpi.png">
+  <meta property="og:site_name" content="ZEZH.RU">
+  <link type="image/x-icon" href="/static/cr_logo/icon.ico" rel="shortcut icon">
+  <link type="image/x-icon" href="/static/cr_logo/icon.ico" rel="icon">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/app.js" defer></script>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <div class="site-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="ZEZH.RU">
+        <picture class="brand-mark">
+          <source srcset="/static/cr_logo/svg/cr_logo_white.svg" media="(prefers-color-scheme: dark)">
+          <img src="/static/cr_logo/svg/cr_logo_black.svg" alt="">
+        </picture>
+        <span class="brand-copy">
+          <strong>ZEZH.RU</strong>
+          <span>короткие ссылки</span>
+        </span>
+      </a>
+
+      <nav class="primary-nav" aria-label="Основная навигация">
+        <a class="nav-link{% if request.path == '/' %} is-active{% endif %}" href="/" {% if request.path == '/' %}aria-current="page"{% endif %}>
+          Одна ссылка
+        </a>
+        <a class="nav-link{% if request.path == '/create_multi' %} is-active{% endif %}" href="/create_multi" {% if request.path == '/create_multi' %}aria-current="page"{% endif %}>
+          Мульти-ссылка
+        </a>
+      </nav>
+    </header>
+
+    <main class="page-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <picture>
+          <source srcset="/static/full_logo/svg/full_logo_white.svg" media="(prefers-color-scheme: dark)">
+          <img src="/static/full_logo/svg/full_logo_black.svg" alt="ZEZH.RU" width="104">
+        </picture>
+        <span>сервисы для ссылок</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

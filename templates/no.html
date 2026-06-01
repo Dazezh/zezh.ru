@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Ссылка не найдена | ZEZH.RU</title>
+  <meta property="og:title" content="Нет исходной ссылки">
+  <meta property="og:description" content="Ссылка с кодом {{ short_code }} не найдена">
+{% endblock %}
+
+{% block content %}
+  <section class="status-panel" aria-labelledby="not-found-title">
+    <div class="status-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="44" height="44" fill="none">
+        <path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1M14 11a5 5 0 0 0-7.1 0l-2 2A5 5 0 0 0 12 20.1l1.1-1.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="section-label">404</div>
+    <h1 id="not-found-title">Ссылка не найдена</h1>
+    <p>Код <strong>{{ short_code }}</strong> не связан с исходным URL.</p>
+    <a href="{{ home_url }}" class="btn btn-primary">На главную</a>
+  </section>
+{% endblock %}

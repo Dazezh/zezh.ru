@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Мульти-ссылка | ZEZH.RU</title>
+  <meta property="og:title" content="Мульти-ссылка">
+  <meta property="og:description" content="Просмотр мульти-ссылки {{ short_code }}">
+{% endblock %}
+
+{% block content %}
+  <section class="workspace workspace--result">
+    <section class="result-grid result-grid--wide" aria-label="Содержимое мульти-ссылки">
+      <article class="panel links-panel">
+        <div class="section-label">Список</div>
+        <div class="link-list">
+          {% for result in results %}
+          <div class="link-item">
+            <div class="link-item-main">
+              <strong>{{ result["description"] }}</strong>
+              <span>{{ result['url'] }}</span>
+            </div>
+            <a href="{{ result['url'] }}" class="btn btn-primary btn-small">Перейти</a>
+          </div>
+          {% endfor %}
+        </div>
+      </article>
+
+      <article class="panel qr-panel">
+        <div class="section-label">QR-код</div>
+        <div id="qrLoader" class="loading-box qr-container">
+          <span class="spinner" aria-hidden="true"></span>
+          <span class="visually-hidden">Загрузка...</span>
+        </div>
+        <img id="qrImage" src="{{ home_url }}make_qr?url={{ short_url }}"
+             class="qr-image qr-container d-none" alt="QR-код">
+        <a href="{{ home_url }}make_qr?url={{ short_url }}" download="qr_{{ short_code }}.png"
+           class="btn btn-secondary">Скачать QR</a>
+      </article>
+    </section>
+
+    <section class="result-hero" aria-labelledby="multi-result-title">
+      <div class="section-label">Мульти-ссылка</div>
+      <h1 id="multi-result-title">{{ short_code }}</h1>
+      <div class="copy-row">
+        <input type="text" class="form-control" value="{{ short_url }}" id="shortUrl" readonly>
+        <button class="btn btn-primary" type="button" id="copyButton" onclick="copyText('shortUrl')">Копировать</button>
+      </div>
+    </section>
+
+    <div class="action-row">
+      <a href="{{ home_url }}" class="btn btn-outline">На главную</a>
+      <a href="/create_multi" class="btn btn-primary">Создать ещё</a>
+    </div>
+  </section>
+{% endblock %}

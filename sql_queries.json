@@ -1,0 +1,20 @@
+{
+    "mysql": {
+        "create_short_links_table": "CREATE TABLE IF NOT EXISTS `short_links` (`id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Первичный ключ', `short_code` varchar(20) NOT NULL COMMENT 'Короткий код ссылки', `original_url` text COMMENT 'Оригинальная ссылка (NULL для мульти-ссылок)', `is_multi` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Является ли мульти-ссылкой', `click_count` int(11) NOT NULL DEFAULT 0 COMMENT 'Количество переходов', `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Дата создания', PRIMARY KEY (`id`), UNIQUE KEY `unique_short_code` (`short_code`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        "create_link_items_table": "CREATE TABLE IF NOT EXISTS `link_items` (`id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Первичный ключ', `link_id` int(11) NOT NULL COMMENT 'ID родительской ссылки', `url` text NOT NULL COMMENT 'URL элемента', `description` varchar(255) DEFAULT NULL COMMENT 'Описание ссылки', `position` int(11) NOT NULL DEFAULT 0 COMMENT 'Порядковый номер', PRIMARY KEY (`id`), KEY `idx_link_id` (`link_id`), CONSTRAINT `fk_link_items_link_id` FOREIGN KEY (`link_id`) REFERENCES `short_links` (`id`) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;",
+        
+        "select_link_by_code": "SELECT * FROM `short_links` WHERE `short_code` = %s",
+        "select_link_by_url": "SELECT * FROM `short_links` WHERE `original_url` = %s AND `is_multi` = 0",
+        "check_code_exists": "SELECT COUNT(*) as count FROM `short_links` WHERE `short_code` = %s",
+        
+        "insert_simple_link": "INSERT INTO `short_links` (`short_code`, `original_url`, `is_multi`) VALUES (%s, %s, 0)",
+        "insert_multi_link": "INSERT INTO `short_links` (`short_code`, `is_multi`) VALUES (%s, 1)",
+        "insert_link_item": "INSERT INTO `link_items` (`link_id`, `url`, `description`, `position`) VALUES (%s, %s, %s, %s)",
+        
+        "update_click_count": "UPDATE `short_links` SET `click_count` = `click_count` + 1 WHERE `id` = %s",
+        
+        "select_link_items": "SELECT `url`, `description` FROM `link_items` WHERE `link_id` = %s ORDER BY `position` ASC",
+        
+        "get_last_insert_id": "SELECT LAST_INSERT_ID() as id"
+    }
+}

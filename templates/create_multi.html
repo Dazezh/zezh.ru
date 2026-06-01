@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <title>Мульти-ссылка | ZEZH.RU</title>
+  <meta property="og:title" content="Мульти-ссылка">
+  <meta property="og:description" content="Одна короткая ссылка для нескольких ресурсов">
+{% endblock %}
+
+{% block content %}
+  <section class="workspace workspace--single">
+    <section class="tool-panel" aria-labelledby="multi-title">
+      <div class="section-label">Мульти-ссылка</div>
+      <h1 id="multi-title">Набор ссылок под одним кодом</h1>
+
+      <form id="urlForm" class="form-stack" action="/create_multi" method="POST" onsubmit="return checkURLs()">
+        <div class="multi-fields" id="additionalFields">
+          <div class="multi-row">
+            <div class="field">
+              <label>URL</label>
+              <input type="url" class="form-control" name="url" placeholder="https://example.com" required>
+            </div>
+            <div class="field">
+              <label>Описание</label>
+              <input type="text" class="form-control" name="description" placeholder="Документация" required>
+            </div>
+            <button type="button" class="btn btn-danger" disabled>Удалить</button>
+          </div>
+
+          <div class="multi-row">
+            <div class="field">
+              <label>URL</label>
+              <input type="url" class="form-control" name="url" placeholder="https://example.com" required>
+            </div>
+            <div class="field">
+              <label>Описание</label>
+              <input type="text" class="form-control" name="description" placeholder="Материалы" required>
+            </div>
+            <button type="button" class="btn btn-danger" disabled>Удалить</button>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary" onclick="addUrlField()">Добавить ссылку</button>
+
+        <div class="field">
+          <label for="custom_code">Свой код</label>
+          <input type="text" class="form-control" id="custom_code" name="custom_code" placeholder="my-multi-link"
+                 pattern="[a-zA-Z0-9_-]{3,20}" maxlength="20">
+          <small class="hint">3-20 символов: буквы, цифры, дефис, подчеркивание.</small>
+        </div>
+
+        <div class="field" id="sizeBlock">
+          <label for="size">Длина кода</label>
+          <div class="range-row">
+            <input type="range" class="form-range" id="size" name="size" min="3" max="5" value="4">
+            <span class="value-pill" id="sizeValue">4 символа</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-large">Создать мульти-ссылку</button>
+      </form>
+    </section>
+
+    <aside class="side-panel side-panel--compact" aria-labelledby="multi-rules-title">
+      <div class="section-label">Параметры</div>
+      <h2 id="multi-rules-title">Ограничения</h2>
+      <ul class="meta-list">
+        <li><span>Ссылок</span><strong>2-40</strong></li>
+        <li><span>Длина кода</span><strong>3-5</strong></li>
+        <li><span>Свой код</span><strong>до 20</strong></li>
+      </ul>
+    </aside>
+  </section>
+{% endblock %}
