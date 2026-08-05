@@ -44,11 +44,20 @@
 
     <footer class="site-footer">
       <div class="footer-inner">
-        <picture>
-          <source srcset="/static/full_logo/svg/full_logo_white.svg" media="(prefers-color-scheme: dark)">
-          <img src="/static/full_logo/svg/full_logo_black.svg" alt="ZEZH.RU" width="104">
-        </picture>
-        <a href="https://github.com/Dazezh/zezh.ru" target="_blank" rel="noopener noreferrer"><span>исходный код на GitHub</span></a>
+        <a class="footer-brand" href="https://r.zezh.ru/" target="_blank" rel="noopener noreferrer">
+          <picture>
+            <source srcset="/static/full_logo/svg/full_logo_white.svg" media="(prefers-color-scheme: dark)">
+            <img src="/static/full_logo/svg/full_logo_black.svg" alt="ZEZH.RU" width="104">
+          </picture>
+          <span class="footer-brand__text">
+            <span class="footer-brand__arrow" aria-hidden="true">←</span>
+            Больше о разработчике
+          </span>
+        </a>
+        <div class="div">
+          <a class="source-link" href="https://github.com/Dazezh/zezh.ru" target="_blank" rel="noopener noreferrer"><span>исходный код на GitHub</span></a>
+          <p>© 2026 Роман Бальчонок. Все права защищены.</p>
+        </div>
       </div>
     </footer>
   </div>

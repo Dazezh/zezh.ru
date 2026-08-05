@@ -1,0 +1,7 @@
+# Основные зависимости ZEZH.RU
+# Установка: pip install -r requirements.txt
+
+Flask>=3.0
+PyMySQL>=1.1
+qrcode>=7.4
+pillow>=10.0

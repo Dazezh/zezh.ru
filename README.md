@@ -57,7 +57,7 @@ When `sql_install` is `false`, the database layer runs `db_init.sql` once, then 
 Install the Python dependencies, prepare MySQL, then start the app:
 
 ```bash
-pip install flask pymysql qrcode pillow
+pip install -r requirements.txt
 python short.py
 ```
 
@@ -70,3 +70,7 @@ http://127.0.0.1:5000
 ## Notes
 
 This is a small service by design. There are no background workers, admin panels, or heavy frameworks. The useful parts are plain: routes, templates, named SQL, and a compact DB layer.
+
+## Branding & Licensing
+
+* Licensing: Source code is licensed under GPL-3.0-or-later. Branding, logos, illustrations, mascots and other visual identity assets are protected by copyright and are not covered by the GPL. For more details, see the [COPYRIGHT.md](COPYRIGHT.md) file.
